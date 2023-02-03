@@ -1,0 +1,33 @@
+; SICP Exercise 2.46
+
+(define (make-2Dvect x y)
+    (list x y))
+(define (x-2Dvect v)
+    (car v))
+(define (y-2Dvect v)
+    (cdr v))
+(define (add-2Dvect v1 v2)
+    (define x1 (x-2Dvect v1))
+    (define x2 (x-2Dvect v2))
+    (define y1 (y-2Dvect v1))
+    (define y2 (y-2Dvect v2))
+    (make-2Dvect (+ x1 x2) (+ y1 y2)))
+(define (sub-2Dvect v1 v2)
+    (define x1 (x-2Dvect v1))
+    (define x2 (x-2Dvect v2))
+    (define y1 (y-2Dvect v1))
+    (define y2 (y-2Dvect v2))
+    (make-2Dvect (- x1 x2) (- y1 y2)))
+(define (scale-2Dvect v s)
+    (map (lambda (x) (* x s)) v))
+
+; SICP Exercise 2.47
+
+(define (make-2Dframe v0 edge1 edge2)
+    (list v0 edge1 edge2))
+(define (frame-origin frame)
+    (car frame))
+(define (frame-edge1 frame)
+    (cadr frame))
+(define (frame-edge2 frame)
+    (enumerate-tree (cdr (cdr frame))))
