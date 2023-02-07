@@ -1,3 +1,5 @@
+; SICP Exercise 2.66
+
 (define (entry tree)
     (car tree))
 (define (left-branch tree)
@@ -6,22 +8,6 @@
     (caddr tree))
 (define (make-tree entry left right)
     (list entry left right))
-
-(define (element-of-set? x set)
-    (cond ((null? set) false)
-          ((= x (entry set)) true)
-          ((< x (entry set)) (element-of-set? x (left-branch set)))
-          ((> x (entry set)) (element-of-set? x (right-branch set)))))
-
-(define (adjoin-set x set)
-    (cond ((null? set) (make-tree x null null))
-          ((= x (entry set)) set)
-          ((< x (entry set)) (make-tree (entry set) 
-                                        (adjoin-set x (left-branch set))
-                                        (right-branch set)))
-          ((> x (entry set)) (make-tree (entry set)
-                                        (left-branch set)
-                                        (adjoin-set x (right-branch set))))))
 
 (define (partial-tree elts n)
   (if (= n 0)
@@ -39,9 +25,27 @@
                 (cons (make-tree this-entry left-tree right-tree)
                       remaining-elts))))))))
 
-
 (define (list-to-tree list)
     (car (partial-tree list (length list))))
 
+(define (key record)
+    (car record))
+(define (data record)
+    (cdr record))
+(define (make-record key data)
+    (list key data))
 
+(define database-bastardi
+    (list (make-record 1 'Gesù)
+          (make-record 2 'Maria)
+          (make-record 3 'Giuseppe)
+          (make-record 4 'PadrePio)
+          (make-record 5 'Cristoddio)
+          (make-record 6 'GiovanniPaoloFecondo)
+          (make-record 7 'LaDremaDiTognetti)))
 
+(define (lookup in-key database)
+    (cond ((null? database) (display "No entries found"))
+          ((= in-key (key (car database))) (car database))
+          ((< in-key (key (car database))) (lookup in-key (left-branch  database)))
+          ((> in-key (key (car database))) (lookup in-key (right-branch database)))))
