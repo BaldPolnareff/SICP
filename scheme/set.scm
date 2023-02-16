@@ -84,7 +84,7 @@
         (display limit))
 
     (define (correct-password? input-pass)
-        (cond ((equal? input-pass password) (reset-count counter) true)
+        (cond ((equal? input-pass password) (reset-count (attempts-made)) true)
               (else (increase-count 1) false)))
 
     (define (increase-count)
@@ -95,7 +95,7 @@
         (increase-count 0))
     
     (define (dispatch pass m)
-        (if (correct-password? pass)
+        (if (correct-password? pass (attempts-made))
                 (cond ((equal? m 'withdraw) withdraw)
                       ((equal? m 'deposit) deposit)
                       (else (error "Unkwown operation - MAKE-ACCOUNT: " m)))
@@ -103,3 +103,31 @@
                   (else (print-attempts (attempts-made limit))))))
     dispatch
 )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define rand (let ((x random-init))
+                (lambda () (set! x (rand-update x)) x)))
+
+(define (random-in-range inf sup)
+    (let ((range (abs (- sup inf))))
+        (+ inf (random range))))
+
+(define (append! x y)
+    (set-cdr! (last-pair x) y) x)
+(define (make-cycle x)
+    (set-cdr! (last-pair x) x) x)
+
+(define z (make-cycle '('a 'b 'c)))
+
+(define (bill-count-pairs x)
+    (if (not (pair? x))
+        0
+        (+ (bill-count-pairs (car x))
+           (bill-count-pairs (cdr x))
+           1)))
+
+(define cacca (list '(1 2) '(3 4) '(5 6)))
+
+(define (count-pairs ls)
+    )
